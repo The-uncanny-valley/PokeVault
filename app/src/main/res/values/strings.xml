@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">PokeVault</string>
+    <string name="sort_by">Sort by</string>
+    <string name="apply_filters">Apply filters</string>
+    <string name="filter_by_type">Filter by type</string>
+    <string name="pokevault">PokeVault</string>
+    <string name="filter_options">Filter options</string>
+    <string name="search_pokemon">Search Pokémon</string>
 </resources>
