@@ -13,3 +13,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Ignore machine-specific IDE configs
+/.idea/misc.xml
+/.idea/compiler.xml
+/.idea/deploymentTargetSelector.xml
