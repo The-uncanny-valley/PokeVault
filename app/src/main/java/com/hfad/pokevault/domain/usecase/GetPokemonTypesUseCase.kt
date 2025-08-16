@@ -17,6 +17,12 @@ class GetPokemonListUseCase @Inject constructor(
     private val repository: PokeRepository
 ) {
     suspend operator fun invoke(): List<PokemonListItem> {
-        return repository.getPokemonList()
+        return repository.getPokemonListEntities().map { entity ->
+            PokemonListItem(
+                name = entity.name,
+                url = entity.url,
+                types = entity.types
+            )
+        }
     }
 }
