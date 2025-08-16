@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,7 +19,6 @@ import com.google.android.material.textfield.TextInputLayout
 import com.hfad.pokevault.R
 import com.hfad.pokevault.presentation.adapter.PokemonAdapter
 import com.hfad.pokevault.presentation.viewmodel.PokemonListViewModel
-import com.hfad.pokevault.presentation.viewmodel.PokemonViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -26,8 +26,8 @@ import kotlinx.coroutines.launch
 class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
 
     private lateinit var adapter: PokemonAdapter
-//    private val viewModel: PokemonViewModel by viewModels()
-private val viewModel: PokemonListViewModel by viewModels()
+
+    private val viewModel: PokemonListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,7 +70,22 @@ private val viewModel: PokemonListViewModel by viewModels()
         // handle filter icon click
         val searchLayout = view.findViewById<TextInputLayout>(R.id.searchLayout)
         searchLayout.setEndIconOnClickListener {
-            val filterSheet = FilterBottomSheetFragment()
+            val filterSheet = FilterBottomSheetFragment(
+                onApply = { selectedTypes ->
+                    val filtered = viewModel.pokemonList.value.filter { pokemon ->
+                        selectedTypes.all { selectedType ->
+                            pokemon.types.contains(selectedType) // <-- see next
+                        }
+                    }
+                    adapter.updateList(filtered)
+
+                    Toast.makeText(
+                        requireContext(),
+                        "Filtering by: ${selectedTypes.joinToString()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            )
             filterSheet.show(parentFragmentManager, "FilterBottomSheet")
         }
 
@@ -83,7 +98,6 @@ private val viewModel: PokemonListViewModel by viewModels()
         lifecycleScope.launch {
             Log.i("API_TEST", "Fragment created")
         }
-
     }
 
     private fun observePokemons() {

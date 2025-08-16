@@ -17,6 +17,16 @@ class PokeRepositoryImpl @Inject constructor(
 
     override suspend fun getPokemonList(): List<PokemonListItem> {
         val response = api.getPokemonList()
-        return response.results
+
+        // Fetch details for each Pokémon to get its types
+        return response.results.map { basicPokemon ->
+            val details = api.getPokemonDetails(basicPokemon.name)
+            val typeNames = details.types.map { it.type.name }
+            PokemonListItem(
+                name = basicPokemon.name,
+                url = basicPokemon.url,
+                types = typeNames // <-- we'll add this property in the model
+            )
+        }
     }
 }

@@ -7,4 +7,5 @@
     <string name="filter_options">Filter options</string>
     <string name="search_pokemon">Search Pokémon</string>
     <string name="filter">Filter</string>
+    <string name="drag_handle">drag_handle</string>
 </resources>
