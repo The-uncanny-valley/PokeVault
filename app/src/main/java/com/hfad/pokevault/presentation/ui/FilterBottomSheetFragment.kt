@@ -7,13 +7,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.hfad.pokevault.R
 import com.hfad.pokevault.presentation.viewmodel.PokemonTypeViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FilterBottomSheetFragment(
@@ -37,20 +40,26 @@ class FilterBottomSheetFragment(
         val chipGroup = view.findViewById<ChipGroup>(R.id.type_chip_group)
         val applyButton = view.findViewById<Button>(R.id.apply_button)
 
-        // Observe types from ViewModel
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.types.collect { types ->
-                chipGroup.removeAllViews()
-                types.forEach { type ->
-                    val chip = Chip(requireContext()).apply {
-                        text = type.name.replaceFirstChar { it.uppercase() }
-                        isCheckable = true
-                        setOnCheckedChangeListener { _, isChecked ->
-                            if (isChecked) selectedTypes.add(type.name)
-                            else selectedTypes.remove(type.name)
+        // Launch a coroutine tied to the fragment's view lifecycle
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.types.collect { types ->
+                    // Clear any existing chips in the chip group
+                    chipGroup.removeAllViews()
+                    // For each type, create a Chip view
+                    types.forEach { type ->
+                        val chip = Chip(requireContext()).apply {
+                            text = type.name.replaceFirstChar { it.uppercase() }
+                            isCheckable = true
+                            // Update selectedTypes set when the chip is checked or unchecked
+                            setOnCheckedChangeListener { _, isChecked ->
+                                if (isChecked) selectedTypes.add(type.name)
+                                else selectedTypes.remove(type.name)
+                            }
                         }
+                        // Add the chip to the chip group
+                        chipGroup.addView(chip)
                     }
-                    chipGroup.addView(chip)
                 }
             }
         }
