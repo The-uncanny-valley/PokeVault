@@ -45,6 +45,8 @@ kotlin {
 
 dependencies {
 
+    implementation(libs.androidx.paging.runtime)
+
     // Explicit JavaPoet to avoid missing method issues
     implementation(libs.javapoet)
 
@@ -53,6 +55,8 @@ dependencies {
 
     implementation(libs.room.runtime)
     ksp(libs.androidx.room.compiler) // Use ksp instead of kapt
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.paging)
 
     implementation(libs.coil)
     implementation(libs.hilt.android)
