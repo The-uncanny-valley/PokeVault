@@ -70,6 +70,10 @@ class PokemonListViewModel @Inject constructor(
         _typeFilters.value = types
     }
 
+    fun clearTypeFilters() {
+        _typeFilters.value = emptyList()
+    }
+
     fun refreshPokemons() {
         viewModelScope.launch {
             try {

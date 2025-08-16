@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.hfad.pokevault.R
@@ -43,8 +44,26 @@ class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.pokemonRecyclerView)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2) // 2 columns
 
-        adapter = PokemonAdapter(emptyList())
+        val emptyLayout = view.findViewById<LinearLayout>(R.id.empty_layout)
+        val resetFiltersButton = view.findViewById<MaterialButton>(
+            R.id.reset_filters_button
+        )
+
+        adapter = PokemonAdapter()
         recyclerView.adapter = adapter
+
+        adapter.addLoadStateListener { loadState ->
+            emptyLayout.visibility = if (
+                loadState.refresh is androidx.paging.LoadState.NotLoading &&
+                adapter.itemCount == 0
+            ) View.VISIBLE else View.GONE
+        }
+
+        resetFiltersButton.setOnClickListener {
+            viewModel.clearTypeFilters()
+            viewModel.refreshPokemons() // reload the list
+            Toast.makeText(requireContext(), "Filters cleared", Toast.LENGTH_SHORT).show()
+        }
 
         observePokemons()
         viewModel.loadPokemon() // call use case via ViewModel

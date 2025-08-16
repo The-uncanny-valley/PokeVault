@@ -8,4 +8,7 @@
     <string name="search_pokemon">Search Pokémon</string>
     <string name="filter">Filter</string>
     <string name="drag_handle">drag_handle</string>
+    <string name="sad_pikachu">Sad Pikachu</string>
+    <string name="pokemons_not_found">Pokemons Not Found</string>
+    <string name="reset_filters">Reset\nFilters</string>
 </resources>
