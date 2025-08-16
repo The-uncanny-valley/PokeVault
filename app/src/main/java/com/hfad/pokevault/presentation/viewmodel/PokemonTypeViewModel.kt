@@ -18,9 +18,18 @@ class PokemonTypeViewModel @Inject constructor(
     private val _types = MutableStateFlow<List<PokemonType>>(emptyList())
     val types: StateFlow<List<PokemonType>> = _types
 
+    private var cachedTypes: List<PokemonType>? = null
+
     fun loadTypes() {
+        if (cachedTypes != null) {
+            _types.value = cachedTypes!!
+            return
+        }
+
         viewModelScope.launch {
-            _types.value = getPokemonTypes()
+            val typesFromApi = getPokemonTypes()
+            cachedTypes = typesFromApi
+            _types.value = typesFromApi
         }
     }
 }
