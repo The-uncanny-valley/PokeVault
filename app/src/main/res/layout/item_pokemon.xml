@@ -1,6 +1,6 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/pokemonCard"
+    android:id="@+id/pokemon_card"
     android:layout_width="164dp"
     android:layout_height="164dp"
     android:layout_margin="8dp"
@@ -22,7 +22,7 @@
         tools:layout_width="150dp">
 
         <ImageView
-            android:id="@+id/pokemonImage"
+            android:id="@+id/pokemon_image"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_marginTop="12dp"
@@ -33,7 +33,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/pokemonName"
+            android:id="@+id/pokemon_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -45,7 +45,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pokemonImage"
+            app:layout_constraintTop_toBottomOf="@id/pokemon_image"
             tools:text="Pikachu" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
