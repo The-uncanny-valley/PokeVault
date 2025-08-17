@@ -38,7 +38,16 @@ It is built with modern Android tools and follows **clean architecture** princip
 
 └── di       
 
-## Screenshots  
+## Screenshots
+
+<table>
+  <tr>
+    <td><img src="Media/splash_activity.png" alt="Splash Screen (Light)" width="200"/></td>
+    <td><img src="Media/pokemon_list_fragment_cleared.png" alt="Main Screen (Light)" width="200"/></td>
+    <td><img src="Media/pokemon_list_fragment_not_found.png" alt="No results (Light)" width="200"/></td>
+    <td><img src="Media/filter_bottom_sheet_fragment_night.png" alt="Filter bottom sheet (Dark)" width="200"/></td>
+  </tr>
+</table>
 
 ## How to Run
 
