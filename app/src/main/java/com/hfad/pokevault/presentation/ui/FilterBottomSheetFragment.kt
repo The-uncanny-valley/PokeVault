@@ -23,8 +23,7 @@ class FilterBottomSheetFragment(
     private val onApply: (List<String>) -> Unit // callback to return selected types
 ) : BottomSheetDialogFragment() {
 
-    // list to store all selected types
-    private val selectedTypes = mutableListOf<String>()
+    private val selectedTypes = mutableSetOf<String>()
     private val viewModel: PokemonTypeViewModel by viewModels()
 
     override fun onCreateView(
@@ -37,43 +36,51 @@ class FilterBottomSheetFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val chipGroup = view.findViewById<ChipGroup>(R.id.type_chip_group)
         val applyButton = view.findViewById<Button>(R.id.apply_button)
 
-        // Launch a coroutine tied to the fragment's view lifecycle
+        observeTypes(chipGroup)
+        setupApplyButton(applyButton)
+
+        viewModel.loadTypes()
+    }
+
+    private fun observeTypes(chipGroup: ChipGroup) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.types.collect { types ->
-                    // Clear any existing chips in the chip group
-                    chipGroup.removeAllViews()
+                    chipGroup.removeAllViews() // clear any existing chips in the chip group
                     // For each type, create a Chip view
                     types.forEach { type ->
-                        val chip = Chip(requireContext()).apply {
-                            text = type.name.replaceFirstChar { it.uppercase() }
-                            isCheckable = true
-                            // Update selectedTypes set when the chip is checked or unchecked
-                            setOnCheckedChangeListener { _, isChecked ->
-                                if (isChecked) selectedTypes.add(type.name)
-                                else selectedTypes.remove(type.name)
-                            }
-                        }
-                        // Add the chip to the chip group
-                        chipGroup.addView(chip)
+                        chipGroup.addView(createTypeChip(type.name))
                     }
                 }
             }
         }
+    }
 
-        applyButton.setOnClickListener {
+    private fun createTypeChip(typeName: String): Chip {
+        return Chip(requireContext()).apply {
+            text = typeName.replaceFirstChar { it.uppercase() }
+            isCheckable = true
+            chipStrokeWidth = 0f
+
+            setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) selectedTypes.add(typeName)
+                else selectedTypes.remove(typeName)
+            }
+        }
+    }
+
+    private fun setupApplyButton(button: Button) {
+        button.setOnClickListener {
             if (selectedTypes.isEmpty()) {
                 Toast.makeText(requireContext(), "Select at least one type", Toast.LENGTH_SHORT).show()
             } else {
-                onApply(selectedTypes)
+                onApply(selectedTypes.toList())
                 dismiss()
             }
         }
-
-        // Load types
-        viewModel.loadTypes()
     }
 }
