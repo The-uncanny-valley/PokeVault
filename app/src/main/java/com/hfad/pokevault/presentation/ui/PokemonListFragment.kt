@@ -1,5 +1,6 @@
 package com.hfad.pokevault.presentation.ui
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
@@ -51,7 +52,12 @@ class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
     }
 
     private fun setupRecyclerView() {
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        val displayMetrics = Resources.getSystem().displayMetrics
+        val screenWidthDp = displayMetrics.widthPixels / displayMetrics.density
+        val columnWidthDp = 180 // approximate width of your item
+        val spanCount = (screenWidthDp / columnWidthDp).toInt().coerceAtLeast(2)
+
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), spanCount)
         adapter = PokemonAdapter()
         recyclerView.adapter = adapter
 
