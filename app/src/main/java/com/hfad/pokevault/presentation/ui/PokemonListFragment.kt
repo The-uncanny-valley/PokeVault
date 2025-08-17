@@ -1,10 +1,8 @@
 package com.hfad.pokevault.presentation.ui
 
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -27,28 +25,33 @@ import kotlinx.coroutines.launch
 class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
 
     private lateinit var adapter: PokemonAdapter
-
     private val viewModel: PokemonListViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pokemon_list, container, false)
-    }
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var searchEditText: TextInputEditText
+    private lateinit var emptyLayout: LinearLayout
+    private lateinit var resetFiltersButton: MaterialButton
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.pokemonRecyclerView)
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2) // 2 columns
+        initViews(view)
+        setupRecyclerView()
+        setupListeners()
 
-        val emptyLayout = view.findViewById<LinearLayout>(R.id.empty_layout)
-        val resetFiltersButton = view.findViewById<MaterialButton>(
-            R.id.reset_filters_button
-        )
+        observePokemons()
+        viewModel.refreshPokemons()
+    }
 
+    private fun initViews(view: View) {
+        recyclerView = view.findViewById(R.id.pokemon_recycler_view)
+        searchEditText = view.findViewById(R.id.search_edit_text)
+        emptyLayout = view.findViewById(R.id.empty_layout)
+        resetFiltersButton = view.findViewById(R.id.reset_filters_button)
+    }
+
+    private fun setupRecyclerView() {
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         adapter = PokemonAdapter()
         recyclerView.adapter = adapter
 
@@ -58,45 +61,46 @@ class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
                 adapter.itemCount == 0
             ) View.VISIBLE else View.GONE
         }
+    }
 
+    private fun setupListeners() {
         resetFiltersButton.setOnClickListener {
             viewModel.clearTypeFilters()
+            viewModel.setSearchQuery("") // clear search query in ViewModel
+
+            searchEditText.setText("") // clear the actual text in the search bar
+
             viewModel.refreshPokemons() // reload the list
             Toast.makeText(requireContext(), "Filters cleared", Toast.LENGTH_SHORT).show()
         }
 
-        observePokemons()
-        viewModel.loadPokemon() // call use case via ViewModel
+        setupSearch()
+        setupFilterClick()
+    }
 
-        // Observe state (optional for testing)
-//        lifecycleScope.launchWhenStarted {
-//            viewModel.pokemonListState.collect { list ->
-//                Log.i("API_TEST", "Fetched ${list.size} Pokémon")
-//                list.take(5).forEach { Log.i("API_TEST", it.name) }
-//            }
-//        }
-
-        val searchEditText = view.findViewById<TextInputEditText>(R.id.searchEditText)
-
-        searchEditText.addTextChangedListener { text ->
-            val query = text?.toString().orEmpty()
-            val filtered = viewModel.pokemonList.value.filter {
-                it.name.contains(query, ignoreCase = true)
+    private fun observePokemons() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.pokemonPagingFlow.collect { pagingData ->
+                    adapter.submitData(pagingData)
+                }
             }
-            adapter.updateList(filtered)
         }
+    }
 
-        // handle filter icon click
-        val searchLayout = view.findViewById<TextInputLayout>(R.id.searchLayout)
+    private fun setupSearch() {
+        val searchEditText = requireView().findViewById<TextInputEditText>(R.id.search_edit_text)
+        searchEditText.addTextChangedListener { text ->
+            viewModel.setSearchQuery(text?.toString().orEmpty())
+        }
+    }
+
+    private fun setupFilterClick() {
+        val searchLayout = requireView().findViewById<TextInputLayout>(R.id.search_layout)
         searchLayout.setEndIconOnClickListener {
             val filterSheet = FilterBottomSheetFragment(
                 onApply = { selectedTypes ->
-                    val filtered = viewModel.pokemonList.value.filter { pokemon ->
-                        selectedTypes.all { selectedType ->
-                            pokemon.types.contains(selectedType) // <-- see next
-                        }
-                    }
-                    adapter.updateList(filtered)
+                    viewModel.setTypeFilters(selectedTypes)
 
                     Toast.makeText(
                         requireContext(),
@@ -106,28 +110,6 @@ class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
                 }
             )
             filterSheet.show(parentFragmentManager, "FilterBottomSheet")
-        }
-
-        // OBSERVE the filter click event here
-//        viewModel.filterClickEvent.observe(viewLifecycleOwner) {
-//            val filterSheet = FilterBottomSheetFragment()
-//            filterSheet.show(parentFragmentManager, "FilterBottomSheet")
-//        }
-
-        lifecycleScope.launch {
-            Log.i("API_TEST", "Fragment created")
-        }
-    }
-
-    private fun observePokemons() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.pokemonList.collect { pokemonList ->
-                    Log.i("API_TEST", "Updating adapter with ${pokemonList.size} Pokémon")
-                    adapter.updateList(pokemonList)
-                }
-            }
-
         }
     }
 }
