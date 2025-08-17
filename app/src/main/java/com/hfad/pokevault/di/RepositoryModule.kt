@@ -1,6 +1,7 @@
 package com.hfad.pokevault.di
 
 import com.hfad.pokevault.data.api.PokeApiService
+import com.hfad.pokevault.data.db.PokemonDao
 import com.hfad.pokevault.data.repository.PokeRepositoryImpl
 import com.hfad.pokevault.domain.repository.PokeRepository
 import dagger.Module
@@ -15,7 +16,10 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun providePokeRepository(api: PokeApiService): PokeRepository {
-        return PokeRepositoryImpl(api)
+    fun providePokeRepository(
+        apiService: PokeApiService,
+        pokemonDao: PokemonDao
+    ): PokeRepository {
+        return PokeRepositoryImpl(apiService, pokemonDao)
     }
 }
