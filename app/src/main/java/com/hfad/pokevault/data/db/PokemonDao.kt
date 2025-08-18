@@ -20,9 +20,15 @@ interface PokemonDao {
     @Query("SELECT * FROM pokemon_table WHERE name LIKE '%' || :query || '%'")
     fun searchPokemons(query: String): PagingSource<Int, PokemonEntity>
 
-//    @Query("SELECT * FROM pokemon_table WHERE types LIKE '%' || :type || '%'")
-//    fun filterByType(type: String): PagingSource<Int, PokemonEntity>
-
     @RawQuery(observedEntities = [PokemonEntity::class])
     fun filterByTypes(query: SupportSQLiteQuery): PagingSource<Int, PokemonEntity>
+
+    @Query("SELECT * FROM pokemon_table")
+    suspend fun getAllPokemonsEntities(): List<PokemonEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertTypes(types: List<PokemonTypeEntity>)
+
+    @Query("SELECT * FROM pokemon_types")
+    suspend fun getAllTypes(): List<PokemonTypeEntity>
 }
