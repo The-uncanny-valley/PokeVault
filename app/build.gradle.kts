@@ -51,10 +51,13 @@ dependencies {
     implementation(libs.javapoet)
 
     implementation(libs.hilt.android)
-    ksp(libs.hilt.android.compiler) // Use ksp instead of kapt
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.work)
+
+    implementation(libs.androidx.work.runtime.ktx)
 
     implementation(libs.room.runtime)
-    ksp(libs.androidx.room.compiler) // Use ksp instead of kapt
+    ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.paging)
 
