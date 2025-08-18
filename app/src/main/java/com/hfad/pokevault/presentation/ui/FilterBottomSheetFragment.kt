@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -64,7 +65,11 @@ class FilterBottomSheetFragment(
         return Chip(requireContext()).apply {
             text = typeName.replaceFirstChar { it.uppercase() }
             isCheckable = true
+            isClickable = true
             chipStrokeWidth = 0f
+
+            setChipBackgroundColorResource(R.color.chip_selector) // state-dependent colors
+            setTextColor(ContextCompat.getColorStateList(context, R.color.chip_text_selector))
 
             setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) selectedTypes.add(typeName)
