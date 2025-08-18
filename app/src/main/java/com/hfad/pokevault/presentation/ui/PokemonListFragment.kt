@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
@@ -62,10 +63,14 @@ class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
         recyclerView.adapter = adapter
 
         adapter.addLoadStateListener { loadState ->
-            emptyLayout.visibility = if (
-                loadState.refresh is androidx.paging.LoadState.NotLoading &&
-                adapter.itemCount == 0
-            ) View.VISIBLE else View.GONE
+
+            // Only show empty layout if NOT loading AND adapter is empty
+            val isEmpty = loadState.refresh is LoadState.NotLoading && adapter.itemCount == 0
+
+            // Check if user has applied search or filters
+            val userFiltered = viewModel.searchQuery.value.isNotBlank() || viewModel.typeFilters.value.isNotEmpty()
+
+            emptyLayout.visibility = if (isEmpty && userFiltered) View.VISIBLE else View.GONE
         }
     }
 
@@ -97,15 +102,23 @@ class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
     private fun setupSearch() {
         val searchEditText = requireView().findViewById<TextInputEditText>(R.id.search_edit_text)
         searchEditText.addTextChangedListener { text ->
+            // Clear type filters if user starts typing
+            if (!text.isNullOrEmpty()) {
+                viewModel.clearTypeFilters()
+            }
             viewModel.setSearchQuery(text?.toString().orEmpty())
         }
     }
 
     private fun setupFilterClick() {
         val searchLayout = requireView().findViewById<TextInputLayout>(R.id.search_layout)
+
         searchLayout.setEndIconOnClickListener {
             val filterSheet = FilterBottomSheetFragment(
                 onApply = { selectedTypes ->
+
+                    viewModel.setSearchQuery("")
+                    searchEditText.setText("")
                     viewModel.setTypeFilters(selectedTypes)
 
                     Toast.makeText(
