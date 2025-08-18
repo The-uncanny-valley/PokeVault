@@ -1,0 +1,52 @@
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pokemon_card"
+    android:layout_width="124dp"
+    android:layout_height="124dp"
+    android:layout_margin="6dp"
+    android:backgroundTint="@color/surface_container"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="4dp"
+    app:strokeColor="@color/stroke"
+    app:strokeWidth="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintHeight_default="wrap"
+        app:layout_constraintWidth_default="wrap"
+        tools:layout_height="150dp"
+        tools:layout_width="150dp">
+
+        <ImageView
+            android:id="@+id/pokemon_image"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
+            android:layout_marginTop="12dp"
+            android:contentDescription="@null"
+            android:src="@drawable/pikachu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/pokemon_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/sen_bold"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/on_surface_container"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pokemon_image"
+            tools:text="Pikachu" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
