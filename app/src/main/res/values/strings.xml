@@ -11,4 +11,5 @@
     <string name="sad_pikachu">Sad Pikachu</string>
     <string name="pokemons_not_found">Pokemons Not Found</string>
     <string name="reset_filters">Reset\nFilters</string>
+    <string name="images_loading">Images are loading</string>
 </resources>

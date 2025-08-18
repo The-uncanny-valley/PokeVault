@@ -7,5 +7,6 @@ data class PokemonListResponse(
 data class PokemonListItem(
     val name: String,
     val url: String,
-    val types: List<String> = emptyList() // e.g. ["fire", "electric"]
+    val types: List<String> = emptyList(), // e.g. ["fire", "electric"]
+    val imageUrl: String
 )

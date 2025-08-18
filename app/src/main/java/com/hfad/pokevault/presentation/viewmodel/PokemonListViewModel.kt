@@ -27,6 +27,9 @@ class PokemonListViewModel @Inject constructor(
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
 
     private val _typeFilters = MutableStateFlow<List<String>>(emptyList())
     val typeFilters: StateFlow<List<String>> = _typeFilters
@@ -55,7 +58,8 @@ class PokemonListViewModel @Inject constructor(
                     PokemonListItem(
                         name = entity.name,
                         url = entity.url,
-                        types = entity.types
+                        types = entity.types,
+                        imageUrl = entity.imageUrl
                     )
                 }
             }
@@ -76,11 +80,14 @@ class PokemonListViewModel @Inject constructor(
 
     fun refreshPokemons() {
         viewModelScope.launch {
+            _isLoading.value = true
             try {
                 val pokemons = repository.getPokemonListEntities()
                 repository.insertPokemons(pokemons)
             } catch (e: Exception) {
                 Log.e("PokemonViewModel", "Failed to refresh Pokémon", e)
+            } finally {
+                _isLoading.value = false
             }
         }
     }

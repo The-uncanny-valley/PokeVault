@@ -12,6 +12,5 @@ interface PokeRepository {
     suspend fun insertPokemons(pokemons: List<PokemonEntity>)
     fun getAllPokemonsPaging(): PagingSource<Int, PokemonEntity>
     fun searchPokemonsPaging(query: String): PagingSource<Int, PokemonEntity>
-//    fun filterByTypePaging(type: String): PagingSource<Int, PokemonEntity>
     fun filterByTypePaging(types: List<String>): PagingSource<Int, PokemonEntity>
 }

@@ -21,7 +21,8 @@ class GetPokemonListUseCase @Inject constructor(
             PokemonListItem(
                 name = entity.name,
                 url = entity.url,
-                types = entity.types
+                types = entity.types,
+                imageUrl = entity.imageUrl
             )
         }
     }
