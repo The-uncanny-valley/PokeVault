@@ -11,7 +11,7 @@ It is built with modern Android tools and follows **clean architecture** princip
 - **Light & Dark mode** with Material Design  
 - **Splash screen** on first launch (skipped afterwards)  
 - **Custom app icon**  
-- **"No Pokémon Found"** message with a reset button when no matches exist  
+- "Pokémons Not Found" message with a reset button when no matches exist  
 - Tested on multiple Android versions on **both physical and virtual devices**
 
 ## Tech Stack
