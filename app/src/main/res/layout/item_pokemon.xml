@@ -3,11 +3,11 @@
     android:id="@+id/pokemon_card"
     android:layout_width="164dp"
     android:layout_height="164dp"
-    android:layout_margin="8dp"
-    android:backgroundTint="@color/surface"
+    android:layout_margin="6dp"
+    android:backgroundTint="@color/surface_container"
     app:cardCornerRadius="24dp"
     app:cardElevation="4dp"
-    app:strokeColor="@color/shadow"
+    app:strokeColor="@color/stroke"
     app:strokeWidth="2dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
@@ -36,7 +36,7 @@
             android:id="@+id/pokemon_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:fontFamily="@font/sen_bold"
             android:text=""
             android:textAlignment="center"

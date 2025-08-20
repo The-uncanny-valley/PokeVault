@@ -29,6 +29,7 @@
         android:layout_marginTop="28dp"
         android:gravity="center"
         android:hint="@string/search_pokemon"
+        android:textColorHint="@color/on_search_bar"
         app:boxBackgroundColor="@color/search_bar"
         app:boxCornerRadiusBottomEnd="15dp"
         app:boxCornerRadiusBottomStart="15dp"
@@ -38,22 +39,24 @@
         app:cursorColor="@color/primary"
         app:endIconDrawable="@drawable/ic_filter"
         app:endIconMode="custom"
+        app:endIconTint="@color/on_search_bar"
         app:hintTextColor="@color/primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/logo"
-        app:startIconDrawable="@drawable/ic_search">
+        app:startIconDrawable="@drawable/ic_search"
+        app:startIconTint="@color/on_search_bar">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/search_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:height="60dp"
             android:fontFamily="@font/sen_regular"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLength="20"
             android:paddingStart="42dp"
+            android:textColor="@color/text_search_bar"
             android:textIsSelectable="false"
             android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -62,8 +65,9 @@
         android:id="@+id/pokemon_recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:clipToPadding="false"
         android:layout_marginTop="16dp"
+        android:clipToPadding="false"
+        android:foregroundGravity="center"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -115,4 +119,5 @@
             app:backgroundTint="@color/primary"
             app:cornerRadius="12dp" />
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
