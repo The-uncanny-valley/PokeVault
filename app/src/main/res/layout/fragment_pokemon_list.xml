@@ -15,7 +15,7 @@
         android:layout_marginBottom="28dp"
         android:fontFamily="@font/pokemon_solid"
         android:letterSpacing="0.2"
-        android:text="@string/pokevault"
+        android:text="@string/pokevault_brand"
         android:textColor="@color/on_surface"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,7 +28,7 @@
         android:layout_height="60dp"
         android:layout_marginTop="28dp"
         android:gravity="center"
-        android:hint="@string/search_pokemon"
+        android:hint="@string/pokemon_search_hint"
         android:textColorHint="@color/on_search_bar"
         app:boxBackgroundColor="@color/search_bar"
         app:boxCornerRadiusBottomEnd="15dp"
@@ -91,7 +91,7 @@
         <ImageView
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:contentDescription="@string/sad_pikachu"
+            android:contentDescription="@string/pokemon_sad_pikachu"
             android:src="@drawable/ic_not_found" />
 
         <TextView
@@ -100,7 +100,7 @@
             android:layout_marginTop="8dp"
             android:fontFamily="@font/sen_semi_bold"
             android:gravity="center"
-            android:text="@string/pokemons_not_found"
+            android:text="@string/pokemon_list_empty"
             android:textColor="@color/on_surface"
             android:textSize="24sp" />
 
@@ -113,7 +113,7 @@
             android:focusable="true"
             android:fontFamily="@font/sen_bold"
             android:padding="12dp"
-            android:text="@string/reset_filters"
+            android:text="@string/pokemon_reset_filters"
             android:textColor="@color/on_primary"
             android:textSize="16sp"
             app:backgroundTint="@color/primary"
