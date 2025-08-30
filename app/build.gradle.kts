@@ -61,7 +61,6 @@ dependencies {
     implementation(libs.androidx.room.paging)
 
     implementation(libs.coil)
-    implementation(libs.hilt.android)
     implementation(libs.room.runtime)
     implementation(libs.retrofit)
     implementation(libs.retrofit2.converter.gson)
