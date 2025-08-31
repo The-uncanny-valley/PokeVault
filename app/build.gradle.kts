@@ -44,32 +44,40 @@ kotlin {
 }
 
 dependencies {
-
-    implementation(libs.androidx.paging.runtime)
-
-    // Explicit JavaPoet to avoid missing method issues
-    implementation(libs.javapoet)
-
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.android.compiler)
-    implementation(libs.androidx.hilt.work)
-
-    implementation(libs.androidx.work.runtime.ktx)
-
-    ksp(libs.androidx.room.compiler)
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.room.paging)
-
-    implementation(libs.coil)
-    implementation(libs.room.runtime)
-    implementation(libs.retrofit)
-    implementation(libs.retrofit2.converter.gson)
+    // AndroidX Core & UI
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+
+    // Paging
+    implementation(libs.androidx.paging.runtime)
+
+    // Dependency Injection
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.work)
+
+    // Background Processing
+    implementation(libs.androidx.work.runtime.ktx)
+
+    // Database
+    implementation(libs.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.paging)
+    ksp(libs.androidx.room.compiler)
+
+    // Networking
+    implementation(libs.retrofit)
+    implementation(libs.retrofit2.converter.gson)
+    implementation(libs.coil) // Image loading
+
+    // Explicit JavaPoet to avoid missing method issues
+    implementation(libs.javapoet)
+
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
