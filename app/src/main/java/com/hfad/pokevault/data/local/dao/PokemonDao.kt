@@ -1,4 +1,4 @@
-package com.hfad.pokevault.data.db
+package com.hfad.pokevault.data.local.dao
 
 import androidx.paging.PagingSource
 import androidx.room.Dao
@@ -7,11 +7,13 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.sqlite.db.SupportSQLiteQuery
+import com.hfad.pokevault.data.local.entity.PokemonEntity
+import com.hfad.pokevault.data.local.entity.PokemonTypeEntity
 
 @Dao
 interface PokemonDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun insertAll(pokemons: List<PokemonEntity>)
 
     @Query("SELECT * FROM pokemon_table")
@@ -26,7 +28,7 @@ interface PokemonDao {
     @Query("SELECT * FROM pokemon_table")
     suspend fun getAllPokemonsEntities(): List<PokemonEntity>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun insertTypes(types: List<PokemonTypeEntity>)
 
     @Query("SELECT * FROM pokemon_types")

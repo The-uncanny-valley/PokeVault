@@ -1,4 +1,4 @@
-package com.hfad.pokevault.data.db
+package com.hfad.pokevault.data.local.database
 
 import androidx.room.TypeConverter
 
